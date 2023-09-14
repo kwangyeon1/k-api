@@ -74,6 +74,7 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .antMatchers("/auth/login").permitAll()
                 .antMatchers("/auth/test-login").permitAll()
+                .antMatchers("/user/join").permitAll()
                 .antMatchers("/v3/api-docs/**", "/swagger*/**").permitAll()
                 .anyRequest().authenticated()
 

@@ -1,15 +1,20 @@
 package api.freelive.board.application.service;
 
 import api.freelive.board.application.port.in.AuthUseCase;
+import api.freelive.board.application.port.in.JoinUseCase;
 import api.freelive.board.application.port.out.LoadUserPort;
+import api.freelive.board.application.port.out.SaveUserPort;
 import api.freelive.board.domain.Auth;
 import api.freelive.board.domain.User;
+import api.freelive.board.dto.JoinReqDto;
+import api.freelive.board.dto.UserDto;
 import api.freelive.util.EncryptionValues;
 import api.freelive.util.exception.BadRequestException;
 import api.freelive.util.message.ErrorMessage;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.netty.util.internal.StringUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,11 +23,13 @@ import java.util.Date;
 
 @Service
 @RequiredArgsConstructor
-public class UserService implements AuthUseCase {
+public class UserService implements AuthUseCase, JoinUseCase {
 
     private final BCryptPasswordEncoder passwordEncoder;
 
     private final LoadUserPort loadUserPort;
+
+    private final SaveUserPort saveUserPort;
 
     @Override
     public String encryptPassword(String pw) {
@@ -61,6 +68,20 @@ public class UserService implements AuthUseCase {
                 .compact();
 
         return token;
+    }
+
+    @Override
+    public UserDto join(JoinReqDto joinReqDto) {
+        if(StringUtil.isNullOrEmpty(joinReqDto.getUserId()) || StringUtil.isNullOrEmpty(joinReqDto.getUsername()) || StringUtil.isNullOrEmpty(joinReqDto.getPassword())){
+            throw new BadRequestException(ErrorMessage.BAD_REQUEST_BODY);
+        }
+        String userId = joinReqDto.getUserId();
+        String username = joinReqDto.getUsername();
+        String password = joinReqDto.getPassword();
+
+        saveUserPort.save( new User(userId, username, this.encryptPassword(password)) );
+
+        return new UserDto(userId, username, password);
     }
 
 }

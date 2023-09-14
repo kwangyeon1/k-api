@@ -81,4 +81,10 @@ public class User implements UserDetails {
         this.authorities = authorities;
     }
 
+    public User(String userId, String username, String pw){
+        this.userId = userId;
+        this.username = username;
+        this.pw = pw;
+    }
+
 }
