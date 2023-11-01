@@ -32,4 +32,24 @@ public class ControllerExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.OK);
     }
 
+    @ExceptionHandler(StorageException.class)
+    public ResponseEntity<?> handleBadRequestException(StorageException e) {
+        RestApiErrorResponse errorResponse = new RestApiErrorResponse(
+                HttpServletResponse.SC_OK,
+                e.getMessage()
+        );
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.OK);
+    }
+
+    @ExceptionHandler(DefaultException.class)
+    public ResponseEntity<?> handleBadRequestException(DefaultException e) {
+        RestApiErrorResponse errorResponse = new RestApiErrorResponse(
+                HttpServletResponse.SC_OK,
+                e.getMessage()
+        );
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.OK);
+    }
+
 }
