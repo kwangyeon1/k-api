@@ -7,6 +7,21 @@ import api.freelive.board.domain.PostFile;
 
 public class PostJpaMapper {
 
+    public static Post toDomain(PostJpa postJpa) {
+        return Post.builder()
+                .postNum(postJpa.getPostNum())
+                .userNum(postJpa.getUserNum())
+                .guestHash(postJpa.getGuestHash())
+                .name(postJpa.getName())
+                .title(postJpa.getTitle())
+                .content(postJpa.getContent())
+                .likeCount(postJpa.getLikeCount())
+                .commentCount(postJpa.getCommentCount())
+                .viewCount(postJpa.getViewCount())
+                .isDel(postJpa.getIsDel())
+                .build();
+    }
+
     public static PostJpa toEntity(Post post) {
         return PostJpa.builder()
                 .postNum(post.getPostNum())

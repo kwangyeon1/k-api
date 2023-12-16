@@ -6,7 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
-public class PostReqDto {
+public class PostWriteReqDto {
 
     private String title;
 
