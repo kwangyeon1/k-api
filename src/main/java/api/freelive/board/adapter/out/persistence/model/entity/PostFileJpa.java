@@ -21,6 +21,7 @@ public class PostFileJpa extends JpaAuditingModel {
     @Column(name = "post_file_num")
     private Long postFileNum;
 
+    @JoinColumn(name = "post_num")
     private Long postNum;
 
     private String url;

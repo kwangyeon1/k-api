@@ -1,20 +1,11 @@
-package api.freelive.board.domain;
+package api.freelive.board.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
 @Getter
-@Builder
-@AllArgsConstructor
-public class Post {
+public class PostDto {
 
     private Long postNum;
-
-    private List<PostFile> postFiles;
 
     private Long userNum;
 
@@ -34,8 +25,7 @@ public class Post {
 
     private Boolean isDel;
 
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
-
+    public PostDto(Long postNum) {
+        this.postNum = postNum;
+    }
 }

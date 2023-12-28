@@ -72,6 +72,8 @@ public class SecurityConfig {
 
                 .and()
                 .authorizeRequests()
+                .antMatchers("/upload/**").permitAll()
+                .antMatchers("/post/read/**").permitAll()
                 .antMatchers("/auth/login").permitAll()
                 .antMatchers("/auth/test-login").permitAll()
                 .antMatchers("/user/join").permitAll()
