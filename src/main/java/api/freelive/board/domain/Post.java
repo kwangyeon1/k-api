@@ -4,12 +4,17 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 @Getter
 @Builder
 @AllArgsConstructor
 public class Post {
 
     private Long postNum;
+
+    private List<PostFile> postFiles;
 
     private Long userNum;
 
@@ -28,5 +33,9 @@ public class Post {
     private Long viewCount;
 
     private Boolean isDel;
+
+    private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
 
 }

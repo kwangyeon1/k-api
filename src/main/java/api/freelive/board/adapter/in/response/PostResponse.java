@@ -1,12 +1,18 @@
 package api.freelive.board.adapter.in.response;
 
 import api.freelive.board.domain.Post;
+import api.freelive.board.domain.PostFile;
 import lombok.Getter;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 public class PostResponse {
 
     private Long postNum;
+
+    private List<PostFile> postFiles;
 
     private Long userNum;
 
@@ -26,6 +32,10 @@ public class PostResponse {
 
     private Boolean isDel;
 
+    private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
+
     public PostResponse(Long postNum){
         this.postNum = postNum;
     }
@@ -41,6 +51,10 @@ public class PostResponse {
         this.commentCount = post.getCommentCount();
         this.viewCount = post.getViewCount();
         this.isDel = post.getIsDel();
+        this.createdAt = post.getCreatedAt();
+        this.updatedAt = post.getUpdatedAt();
+
+        this.postFiles = post.getPostFiles();
     }
 
     public PostResponse(Post post, Boolean visibleContent) {
