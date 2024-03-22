@@ -42,10 +42,4 @@ public class PostJpaMapper {
         );
     }
 
-
-    public static PostFileJpa toEntity(PostFile postFile) {
-        return PostFileJpa.builder()
-                .url(postFile.getUrl())
-                .build();
-    }
 }
