@@ -12,6 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 
 @Component
 public class FileManager implements StoreFilePort {
@@ -20,11 +21,11 @@ public class FileManager implements StoreFilePort {
     private Path rootLocation;
 
     @Override
-    public String store(MultipartFile file) {
+    public String storePostFile(MultipartFile file, String fileName) {
         try {
 
             Path destinationFile = this.rootLocation.resolve(
-                    Paths.get(file.getOriginalFilename()))
+                    Paths.get(fileName))
                     .normalize().toAbsolutePath();
             if (!destinationFile.getParent().equals(this.rootLocation.toAbsolutePath())) {
                 throw new StorageException(
@@ -41,4 +42,18 @@ public class FileManager implements StoreFilePort {
             throw new StorageException("파일 저장 실패.", e);
         }
     }
+
+    public void deletePostFiles(List<String> fileNames) {
+        try {
+            for (String fileName : fileNames) {
+                Path fileToDelete = this.rootLocation.resolve(
+                        Paths.get(fileName))
+                        .normalize().toAbsolutePath();
+                Files.deleteIfExists(fileToDelete);
+            }
+        } catch (IOException e) {
+            throw new StorageException("파일 삭제 실패.", e);
+        }
+    }
+
 }

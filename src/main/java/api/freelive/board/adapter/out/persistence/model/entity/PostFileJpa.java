@@ -1,6 +1,7 @@
 package api.freelive.board.adapter.out.persistence.model.entity;
 
 import api.freelive.board.adapter.out.persistence.model.common.JpaAuditingModel;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 
@@ -21,9 +22,18 @@ public class PostFileJpa extends JpaAuditingModel {
     @Column(name = "post_file_num")
     private Long postFileNum;
 
+    @JsonIgnore
+    @ManyToOne
     @JoinColumn(name = "post_num")
-    private Long postNum;
+    private PostJpa postJpa;
+
+    private String name;
 
     private String url;
+
+    public PostFileJpa(String url, String name){
+        this.url = url;
+        this.name = name;
+    }
 
 }

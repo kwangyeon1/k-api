@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @Getter
 @Setter
 public class PostWriteReqDto {
@@ -12,6 +14,10 @@ public class PostWriteReqDto {
 
     private String content;
 
-    private MultipartFile file;
+    private MultipartFile file = null;
+
+    private List<Long> removeFileIds;
+
+    private String p_id; // p_id는 postNum이랑 같다
 
 }

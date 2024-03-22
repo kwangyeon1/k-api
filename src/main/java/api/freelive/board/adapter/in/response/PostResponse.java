@@ -1,7 +1,7 @@
 package api.freelive.board.adapter.in.response;
 
+import api.freelive.board.adapter.out.persistence.model.entity.PostFileJpa;
 import api.freelive.board.domain.Post;
-import api.freelive.board.domain.PostFile;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -12,7 +12,7 @@ public class PostResponse {
 
     private Long postNum;
 
-    private List<PostFile> postFiles;
+    private List<PostFileJpa> postFiles;
 
     private Long userNum;
 

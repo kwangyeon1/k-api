@@ -5,7 +5,6 @@ import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -13,7 +12,6 @@ import java.util.List;
 @AllArgsConstructor
 @Setter
 @Getter
-@Builder
 @DynamicInsert
 @Table(name = "post", catalog = "board")
 public class PostJpa extends JpaAuditingModel {
@@ -23,8 +21,8 @@ public class PostJpa extends JpaAuditingModel {
     @Column(name = "post_num")
     private Long postNum;
 
-    @OneToMany(mappedBy = "postNum", targetEntity = PostFileJpa.class)
-    private List<PostFileJpa> postFileJpas = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "postJpa", targetEntity = PostFileJpa.class)
+    private List<PostFileJpa> postFileJpas;
 
     private Long userNum;
 
@@ -47,4 +45,30 @@ public class PostJpa extends JpaAuditingModel {
 
     @Column(columnDefinition = "TINYINT")
     private Boolean isDel;
+
+    public PostJpa(Long postNum, Long userNum, String title, String content, List<PostFileJpa> postFiles, Long guestHash, String name, Long likeCount, Long commentCount, Long viewCount, Boolean isDel) {
+        this.postNum = postNum;
+        this.userNum = userNum;
+        this.title = title;
+        this.content = content;
+        setPostFiles(postFiles);
+
+        // 아래는 아직 사용하지 않는 속성들
+        this.guestHash = guestHash;
+        this.name = name;
+        this.likeCount = likeCount;
+        this.commentCount = commentCount;
+        this.viewCount = viewCount;
+        this.isDel = isDel;
+    }
+
+    private void setPostFiles(List<PostFileJpa> postFiles) {
+        this.postFileJpas = postFiles;
+        for(PostFileJpa postFile : this.postFileJpas){
+            if(postFile.getPostFileNum() == null){
+                postFile.setPostJpa(this);
+            }
+        }
+    }
+
 }

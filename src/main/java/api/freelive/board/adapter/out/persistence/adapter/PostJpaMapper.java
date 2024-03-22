@@ -3,10 +3,6 @@ package api.freelive.board.adapter.out.persistence.adapter;
 import api.freelive.board.adapter.out.persistence.model.entity.PostFileJpa;
 import api.freelive.board.adapter.out.persistence.model.entity.PostJpa;
 import api.freelive.board.domain.Post;
-import api.freelive.board.domain.PostFile;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class PostJpaMapper {
 
@@ -24,38 +20,31 @@ public class PostJpaMapper {
                 .isDel(postJpa.getIsDel())
                 .createdAt(postJpa.getCreatedAt())
                 .updatedAt(postJpa.getUpdatedAt())
-                .postFiles(mapPostFiles(postJpa.getPostFileJpas()))  // Map PostFiles
+                .postFiles(postJpa.getPostFileJpas())
                 .build();
     }
 
     public static PostJpa toEntity(Post post) {
-        return PostJpa.builder()
-                .postNum(post.getPostNum())
-                .userNum(post.getUserNum())
-                .guestHash(post.getGuestHash())
-                .name(post.getName())
-                .title(post.getTitle())
-                .content(post.getContent())
-                .likeCount(post.getLikeCount())
-                .commentCount(post.getCommentCount())
-                .viewCount(post.getViewCount())
-                .isDel(post.getIsDel())
-                .build();
+        return new PostJpa(
+                post.getPostNum(),
+                post.getUserNum(),
+                post.getTitle(),
+                post.getContent(),
+                post.getPostFiles(),
+
+                // 아래는 아직 사용하지 않는 속성들
+                post.getGuestHash(),
+                post.getName(),
+                post.getLikeCount(),
+                post.getCommentCount(),
+                post.getViewCount(),
+                post.getIsDel()
+        );
     }
 
-    private static List<PostFile> mapPostFiles(List<PostFileJpa> postFileJpas) {
-        return postFileJpas.stream()
-                .map(postFileJpa -> PostFile.builder()
-                        .postFileNum(postFileJpa.getPostFileNum())
-                        .postNum(postFileJpa.getPostNum())
-                        .url(postFileJpa.getUrl())
-                        .build())
-                .collect(Collectors.toList());
-    }
 
     public static PostFileJpa toEntity(PostFile postFile) {
         return PostFileJpa.builder()
-                .postNum(postFile.getPostNum())
                 .url(postFile.getUrl())
                 .build();
     }
