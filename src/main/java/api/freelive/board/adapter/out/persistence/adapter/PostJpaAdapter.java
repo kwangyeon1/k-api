@@ -5,6 +5,7 @@ import api.freelive.board.adapter.out.persistence.repository.PostJpaRepository;
 import api.freelive.board.application.port.out.LoadPostPort;
 import api.freelive.board.application.port.out.SavePostPort;
 import api.freelive.board.domain.Post;
+import api.freelive.board.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -43,6 +44,16 @@ public class PostJpaAdapter implements LoadPostPort, SavePostPort {
     @Override
     public Optional<Page<Post>> getAll(Pageable pageable) {
         Page<PostJpa> postPage = postJpaRepository.findAll(pageable);
+        if(postPage == null){
+            return Optional.empty();
+        }
+
+        return Optional.ofNullable(postPage.map(PostJpaMapper::toDomain));
+    }
+
+    @Override
+    public Optional<Page<Post>> getAllByUser(Pageable pageable, User user) {
+        Page<PostJpa> postPage = postJpaRepository.findAllByUserNum(user.getUserNum(), pageable);
         if(postPage == null){
             return Optional.empty();
         }

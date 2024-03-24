@@ -46,6 +46,18 @@ public class PostController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/my/read")
+    public ResponseEntity<?> readMyPosts(@RequestParam Map<String, String> param, @Parameter(hidden = true) @AuthenticationPrincipal User user) {
+        String page = param.get("page");
+        Page<Post> postPage = readPostUseCase.readMyPosts(page, user);
+
+        ApiResponse<Page<PostResponse>> response = new ApiResponse<>(
+                postPage.map(post -> new PostResponse(post, false))
+        );
+
+        return ResponseEntity.ok(response);
+    }
+
     @PostMapping(path = "/write", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> write(@ModelAttribute PostWriteReqDto postReqDto, @Parameter(hidden = true) @AuthenticationPrincipal User user) {
         Long postNum = editPostUseCase.writePost(postReqDto, user);

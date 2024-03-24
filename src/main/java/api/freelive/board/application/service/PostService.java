@@ -55,6 +55,17 @@ public class PostService implements ReadPostUseCase, EditPostUseCase {
     }
 
     @Override
+    public Page<Post> readMyPosts(String page, User user) {
+        int pageNumber = Integer.parseInt(page); // 페이지 번호를 정수로 변환
+        int pageSize = 5; // 한 페이지당 표시할 게시물 수 (원하는 값으로 조정)
+
+        Page<Post> postPage = loadPostPort.getAllByUser(PageRequest.of(pageNumber - 1, pageSize), user)
+                .orElseThrow(()->new BadRequestException(ErrorMessage.USER_NOT_FOUND));
+
+        return postPage;
+    }
+
+    @Override
     @Transactional(rollbackFor = {Exception.class})
     public Long writePost(PostWriteReqDto postReqDto, User user) {
         if (StringUtil.isNullOrEmpty(postReqDto.getTitle()) || StringUtil.isNullOrEmpty(postReqDto.getContent())) {
